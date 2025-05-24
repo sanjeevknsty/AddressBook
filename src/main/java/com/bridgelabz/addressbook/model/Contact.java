@@ -4,7 +4,7 @@ package com.bridgelabz.addressbook.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "address")
+@Table(name = "contacts")
 public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +14,12 @@ public class Contact {
     private String address;
     public String getName() {
         return name;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public Long getId() {
+    	return id;
     }
 
     public void setName(String name) {
