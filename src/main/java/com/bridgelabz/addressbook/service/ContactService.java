@@ -1,5 +1,6 @@
 package com.bridgelabz.addressbook.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,40 +8,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bridgelabz.addressbook.model.Contact;
-import com.bridgelabz.addressbook.repositoray.ContactRepository;
 
 @Service
 public class ContactService implements IContactService{
 
-    @Autowired
-    private ContactRepository contactRepository;
+    
+    private List<Contact> contactList = new ArrayList<>();
+    private long index = 1;
 
     @Override
     public List<Contact> getAllContacts() {
-        return contactRepository.findAll();
+        return contactList;
     }
 
     @Override
     public Optional<Contact> getContactById(Long id) {
-        return contactRepository.findById(id);
+        return contactList.stream().filter(i -> i.getId() == id).findFirst();
         }
 
     @Override
     public Contact saveContact(Contact contact) {
-        return contactRepository.save(contact);
+    	Contact c = new Contact(index++, contact.getName(), contact.getAddress());
+    	contactList.add(c);
+        return c;
     }
 
     @Override
     public Contact updateContact(Long id, Contact contact) {
-        return contactRepository.findById(id).map(existingContact -> {
-            existingContact.setName(contact.getName());
-            existingContact.setAddress(contact.getAddress());
-            return contactRepository.save(existingContact);
-        }).orElse(null);
+    	Optional<Contact> cont = this.getContactById(id);
+    	Contact con = cont.get(); // Extract the actual object
+            con.setName(contact.getName());
+            con.setAddress(contact.getAddress());
+            return con;
+        
     }
 
     @Override
-    public void deleteContact(Long id) {
-        contactRepository.deleteById(id);
+    public String deleteContact(Long id) {
+        contactList.removeIf(i -> i.getId() == id);
+        return "Deleted " + id;
     }
 }

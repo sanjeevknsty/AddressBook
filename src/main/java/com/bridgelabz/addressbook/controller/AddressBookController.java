@@ -43,7 +43,6 @@ public class AddressBookController {
 	                .orElse(ResponseEntity.notFound().build());
 	    }
 
-	   
 	    @PostMapping
 	    public ResponseEntity<Contact> createPerson(@RequestBody Contact person) {
 	        Contact savedContact = contactService.saveContact(person);
@@ -61,9 +60,9 @@ public class AddressBookController {
 	    }
 
 	    @DeleteMapping("/{id}")
-	    public ResponseEntity<Void> deletePerson(@PathVariable Long id) {
-	        contactService.deleteContact(id);
-	        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	    public ResponseEntity<String> deletePerson(@PathVariable Long id) {
+	        String str =  contactService.deleteContact(id);
+	        return ResponseEntity.ok(str);
 	    }
 
 }

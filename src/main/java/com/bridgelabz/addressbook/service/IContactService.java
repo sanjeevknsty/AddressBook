@@ -10,5 +10,5 @@ public interface IContactService {
 	    Optional<Contact> getContactById(Long id);
 	    Contact saveContact(Contact contact);
 	    Contact updateContact(Long id, Contact contact);
-	    void deleteContact(Long id);
+	    String deleteContact(Long id);
 }
